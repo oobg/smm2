@@ -1,39 +1,12 @@
-# .
+# SMM2
 
-This template should help get you started developing with Vue 3 in Vite.
+슈퍼마리오 메이커 2 뷰어 한국어버전 입니다.<br />
+API 는 [tgrcode](https://github.com/TheGreatRambler) 님의 [MariOver](https://github.com/TheGreatRambler/MariOver)를 사용하였습니다.<br />
+해당 API 문서는 [이곳](https://tgrcode.com/mm2/docs/)에서 확인하세요.
 
-## Recommended IDE Setup
+## 기능
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+**`update`**: 2024-10-21
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+- [ ] 인기맵 조회
+- [ ] 최신맵 조회
