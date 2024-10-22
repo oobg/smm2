@@ -10,7 +10,7 @@
       </div>
       <div class="smm2-flex">
         <router-link to="/popular" class="smm2-link">
-          인기 맵 보기
+          인기 랭킹
           <span class="corner-1"></span>
           <span class="corner-2"></span>
           <span class="corner-3"></span>
@@ -18,7 +18,7 @@
         </router-link>
 
         <router-link to="/new" class="smm2-link">
-          최신 맵 보기
+          새로운 코스
           <span class="corner-1"></span>
           <span class="corner-2"></span>
           <span class="corner-3"></span>
