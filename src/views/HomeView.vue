@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="smm2-container">
-      <div>
+      <div class="smm2-subject">
         <div class="smm2-subject-1">SUPER</div>
         <div class="smm2-subject-2">
           MARIO MAKER
@@ -33,11 +33,23 @@
 </script>
 
 <style scoped>
+main {
+  width: 100%;
+  height: 100%;
+}
+
 div.smm2-container {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.smm2-subject {
+  width: 100%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .smm2-subject-1 {
@@ -78,6 +90,7 @@ div.smm2-flex {
   border: 2px solid transparent;
 }
 
+/* 각 코너 위치 설정 */
 .corner-1, .corner-2, .corner-3, .corner-4 {
   content: "";
   position: absolute;
@@ -89,7 +102,6 @@ div.smm2-flex {
   transition: all 0.1s ease;
 }
 
-/* 각 코너 위치 설정 */
 .corner-1 {
   top: -5px;
   left: -5px;
@@ -120,5 +132,74 @@ div.smm2-flex {
 .smm2-link:hover .corner-3,
 .smm2-link:hover .corner-4 {
   transform: scale(1);
+}
+
+/* 반응형 처리 */
+@media screen and (max-width: 970px) {
+  .smm2-subject-1 {
+    font-size: 2.5rem;
+  }
+
+  .smm2-subject-2 {
+    font-size: 3.5rem;
+    margin-top: -60px;
+  }
+
+  .smm2-subject-3 {
+    font-size: 5rem;
+  }
+
+  .smm2-flex {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 827px) {
+  .smm2-subject {
+    width: 420px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .smm2-subject-1 {
+    font-size: 2.5rem;
+  }
+
+  .smm2-subject-2 {
+    font-size: 3.5rem;
+    margin-top: -60px;
+  }
+
+  .smm2-subject-3 {
+    font-size: 5rem;
+  }
+
+  .smm2-flex {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .smm2-subject {
+    width: 380px;
+    padding-left: 8px;
+  }
+
+  .smm2-subject-1 {
+    font-size: 2rem;
+  }
+
+  .smm2-subject-2 {
+    font-size: 3rem;
+    margin-top: -45px;
+  }
+
+  .smm2-subject-3 {
+    font-size: 4rem;
+  }
 }
 </style>
