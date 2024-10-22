@@ -9,27 +9,17 @@
         </div>
       </div>
       <div class="smm2-flex">
-        <router-link to="/popular" class="smm2-link">
-          인기 랭킹
-          <span class="corner-1"></span>
-          <span class="corner-2"></span>
-          <span class="corner-3"></span>
-          <span class="corner-4"></span>
-        </router-link>
-
-        <router-link to="/new" class="smm2-link">
-          새로운 코스
-          <span class="corner-1"></span>
-          <span class="corner-2"></span>
-          <span class="corner-3"></span>
-          <span class="corner-4"></span>
-        </router-link>
+        <smm2-link to="/popular">인기 랭킹</smm2-link>
+        <smm2-link to="/new">새로운 코스</smm2-link>
       </div>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
+import { defineAsyncComponent } from "vue"
+
+const Smm2Link = defineAsyncComponent(() => import("@/components/Smm2Link.vue"));
 </script>
 
 <style scoped>
@@ -69,69 +59,6 @@ div.smm2-container {
 div.smm2-flex {
   display: flex;
   justify-content: space-around;
-}
-
-.smm2-link {
-  position: relative;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-  color: #531A1B;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 13rem;
-  height: 3rem;
-  background: white;
-  border-radius: 5px;
-  border: 2px solid transparent;
-}
-
-/* 각 코너 위치 설정 */
-.corner-1, .corner-2, .corner-3, .corner-4 {
-  content: "";
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  background-color: #ff6600;
-  z-index: 1;
-  transform: scale(0);
-  transition: all 0.1s ease;
-}
-
-.corner-1 {
-  top: -5px;
-  left: -5px;
-  clip-path: polygon(0 0, 100% 0, 0 100%);
-}
-
-.corner-2 {
-  top: -5px;
-  right: -5px;
-  clip-path: polygon(100% 0, 100% 100%, 0 0);
-}
-
-.corner-3 {
-  bottom: -5px;
-  left: -5px;
-  clip-path: polygon(0 100%, 100% 100%, 0 0);
-}
-
-.corner-4 {
-  bottom: -5px;
-  right: -5px;
-  clip-path: polygon(100% 100%, 0 100%, 100% 0);
-}
-
-/* 호버 시 각 코너 확대 */
-.smm2-link:hover .corner-1,
-.smm2-link:hover .corner-2,
-.smm2-link:hover .corner-3,
-.smm2-link:hover .corner-4 {
-  transform: scale(1);
 }
 
 /* 반응형 처리 */
