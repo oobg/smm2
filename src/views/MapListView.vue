@@ -6,7 +6,11 @@
       <div>다음 페이지</div>
     </div>
   </header>
-  <main style="display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; height: 100%; overflow: auto">
+  <div v-if="isLoading" class="loader-container">
+    <div class="loader"></div>
+    <span>데이터를 불러오고 있습니다...</span>
+  </div>
+  <main style="display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; height: 100%; padding-bottom: 1rem; overflow: auto">
     <article
       v-for="(course, index) in courses"
       :key="index"
@@ -115,6 +119,7 @@ const params = {
 
 const data = ref<FetchPopularResult>({ cache_hits: 0, courses: [] });
 const courses = ref(data.value.courses);
+const isLoading = ref(true);
 
 const makeUploadDate = (date: string) => {
   // 날짜 문자열을 ISO 형식으로 변환
@@ -141,6 +146,7 @@ const formattedCourseID = (courseId: string) => courseId.replace(/([A-Z0-9]{3})(
 onMounted(async () => {
   data.value = await fetchPopular(params);
   courses.value = data.value.courses;
+  isLoading.value = false;
 });
 
 </script>
@@ -157,5 +163,33 @@ article {
 
 .map-description-color {
   background-color: rgb(254, 241, 203);
+}
+
+.loader-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  text-align: center;
+  text-align: -webkit-center;
+}
+
+.loader {
+  border: 4px solid rgba(0, 0, 0, 0.1); /* 바깥 테두리 */
+  border-top: 4px solid #3498db; /* 회전할 색상 부분 */
+  border-radius: 50%; /* 원형으로 만들기 */
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite; /* 회전 애니메이션 */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
