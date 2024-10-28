@@ -6,34 +6,96 @@
       <div>다음 페이지</div>
     </div>
   </header>
-  <main>
+  <main style="display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; height: 100%; overflow: auto">
     <article
       v-for="(course, index) in courses"
       :key="index"
+      style="display: flex; flex-direction: column; padding: 20px; gap: 0.5rem; width: 40rem; border-radius: 1rem"
     >
-      <h1>{{ course.name }}</h1>
-      <img
-        v-if="course.course_id"
-        :src="makeThumbnailUrl(course.course_id)"
-        alt="코스 이미지"
-        loading="lazy"
-      />
-      {{ makeUploadDate(course.uploaded_pretty) }}
-      <p>좋아요 수: {{ course.likes }}</p>
-      <p>도전 수: {{ course.attempts }}</p>
-      <p>{{ makeTagName(course.tag1) }}</p>
-      <p>{{ makeTagName(course.tag2) }}</p>
-      <p>코스 설명</p>
-      <p>{{ course.description }}</p>
-      <div style="display: flex; gap: 20px">
-        <div>베스트 타임</div>
-        <div>클리어율</div>
-        <div>코스 ID</div>
+      <h1 style="display: flex; gap: 0.5rem">
+        <span>
+          {{ course.game_style_name }}
+        </span>
+        <span>
+          {{ course.name }}
+        </span>
+      </h1>
+      <div style="display: flex; gap: 1rem; width: 100%">
+        <div style="width: 16rem; height: 9rem; position: relative; text-align: center">
+          <img
+            v-if="course.course_id"
+            :src="makeThumbnailUrl(course.course_id)"
+            style="width: 100%; height: auto; display: block; border-radius: 8px;"
+            alt="코스 이미지"
+            loading="lazy"
+          />
+          <!-- 텍스트를 이미지 위에 위치시키기 -->
+          <span style="
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 100%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+          ">
+            {{ makeUploadDate(course.uploaded_pretty) }}
+          </span>
+        </div>
+        <div style="display: flex; flex-direction: column; width: 8rem; margin-left: 1rem">
+          <p>❤️ {{ course.likes }}</p>
+          <p>👣 {{ course.attempts }}</p>
+          <p>🏷️ {{ makeTagName(course.tag1) }}</p>
+          <p>🏷️ {{ makeTagName(course.tag2) }}</p>
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+            width: 10rem;
+          ">
+          <div style="display: flex; gap: 0.5rem">
+            <p>{{ makeCountryFlag(course.uploader.country) }}</p>
+            <p>{{ course.uploader.name }}</p>
+          </div>
+          <div
+            style="
+              width: 5rem;
+              height: auto;
+              background-color: rgb(252, 252, 252);
+              border-radius: 1rem;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            "
+          >
+            <img
+              v-if="course.uploader.mii_image"
+              :src="course.uploader.mii_image"
+              style="width: 100%; height: 100%; display: block; border-radius: 1rem;"
+              alt="맵 제작자 Mii 이미지"
+              loading="lazy"
+            />
+          </div>
+        </div>
       </div>
-      <div style="display: flex;; gap: 20px">
-        <div>{{ course.world_record_pretty }}</div>
-        <div>{{ course.clear_rate_pretty }}</div>
-        <div>{{ course.course_id }}</div>
+      <p class="map-description-color" style="height: 5rem; border-radius: 0.5rem; padding: 0.5rem">{{ course.description }}</p>
+      <div style="display: flex; gap: 0.5rem; text-align: center; justify-content: space-between">
+        <div class="map-description-color" style="width: 100%; border-radius: 0.5rem">
+          <p>베스트 타임</p>
+          <p>{{ course.world_record_pretty }}</p>
+        </div>
+        <div class="map-description-color" style="width: 100%; border-radius: 0.5rem">
+          <p>클리어율</p>
+          <p>{{ course.clear_rate_pretty }}</p>
+        </div>
+        <div class="map-description-color" style="width: 100%; border-radius: 0.5rem">
+          <p>코스 ID</p>
+          <p>{{ formattedCourseID(course.course_id) }}</p>
+        </div>
       </div>
     </article>
   </main>
@@ -43,10 +105,10 @@
 import { ref, onMounted } from "vue";
 import { fetchPopular } from "@/api/mari-over";
 import type { FetchPopularResult } from "search_popular_response"
-import { mariOverUrl, TagName } from "@/global/constants"
+import { CountryCode, mariOverUrl, TagName } from "@/global/constants"
 
 const params = {
-  count: 1,
+  count: 10,
   difficulty: "n" as const,
   rejectRegions: "jue",
 }
@@ -72,7 +134,9 @@ const makeUploadDate = (date: string) => {
   });
 };
 const makeThumbnailUrl = (courseId: string) => `${mariOverUrl}/level_thumbnail/${courseId}`;
-const makeTagName = (tag: number) => TagName[tag] ?? "태그 없음";
+const makeTagName = (tag: number) => TagName[tag] ?? "---";
+const makeCountryFlag = (country: string) => CountryCode[country] ?? country;
+const formattedCourseID = (courseId: string) => courseId.replace(/([A-Z0-9]{3})([A-Z0-9]{3})([A-Z0-9]{3})/, "$1-$2-$3");
 
 onMounted(async () => {
   data.value = await fetchPopular(params);
@@ -88,6 +152,10 @@ header {
 }
 
 article {
-  background: #f0f0f0;
+  background: rgb(250, 252, 231);
+}
+
+.map-description-color {
+  background-color: rgb(254, 241, 203);
 }
 </style>
