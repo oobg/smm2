@@ -17,3 +17,10 @@ export const TagName: Record<number, string> = {
 };
 
 export const mariOverUrl: string = "https://tgrcode.com/mm2";
+
+export const CountryCode: Record<string, string> = {
+  JP: "🇯🇵",
+  US: "🇺🇸",
+  KR: "🇰🇷",
+  FR: "🇫🇷",
+}
