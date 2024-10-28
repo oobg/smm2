@@ -15,3 +15,5 @@ export const TagName: Record<number, string> = {
   13: "싱글 플레이",
   14: "퍼즐",
 };
+
+export const mariOverUrl: string = "https://tgrcode.com/mm2";
