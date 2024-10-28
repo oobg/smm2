@@ -47,7 +47,7 @@ import { mariOverUrl, TagName } from "@/global/constants"
 
 const params = {
   count: 1,
-  difficulty: "n",
+  difficulty: "n" as const,
   rejectRegions: "jue",
 }
 
