@@ -32,6 +32,7 @@
             style="width: 100%; height: auto; display: block; border-radius: 8px;"
             alt="코스 이미지"
             loading="lazy"
+            @error="imgErrorFunc"
           />
           <!-- 텍스트를 이미지 위에 위치시키기 -->
           <span style="
@@ -117,6 +118,10 @@ const params = {
   rejectRegions: "jue",
 }
 
+const PLACE_HOLDER_SRC = "https://via.placeholder.com/256x144";
+const RETRY_DELAY = 500;
+
+
 const data = ref<FetchPopularResult>({ cache_hits: 0, courses: [] });
 const courses = ref(data.value.courses);
 const isLoading = ref(true);
@@ -142,6 +147,15 @@ const makeThumbnailUrl = (courseId: string) => `${mariOverUrl}/level_thumbnail/$
 const makeTagName = (tag: number) => TagName[tag] ?? "---";
 const makeCountryFlag = (country: string) => CountryCode[country] ?? country;
 const formattedCourseID = (courseId: string) => courseId.replace(/([A-Z0-9]{3})([A-Z0-9]{3})([A-Z0-9]{3})/, "$1-$2-$3");
+
+const imgErrorFunc = (e: Event) => {
+  const target = e.target as HTMLImageElement;
+  const buffer = target.src;
+  target.src = PLACE_HOLDER_SRC;
+  setTimeout(() => {
+    target.src = buffer;
+  }, RETRY_DELAY);
+};
 
 onMounted(async () => {
   data.value = await fetchPopular(params);
