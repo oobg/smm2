@@ -1,6 +1,6 @@
 import type { FetchPopularParams } from "search_popular_request"
 import type { FetchPopularResult } from "search_popular_response"
-import { mariOverUrl } from "@/global/constants"
+import { mariOverUrl } from "@/script/constants"
 
 const fetchPopular = async (params: FetchPopularParams): Promise<FetchPopularResult> => {
   const {

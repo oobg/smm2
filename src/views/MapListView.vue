@@ -32,7 +32,7 @@
             style="width: 100%; height: auto; display: block; border-radius: 8px;"
             alt="코스 이미지"
             loading="lazy"
-            @error="imgErrorFunc"
+            @error="handleImageError"
           />
           <!-- 텍스트를 이미지 위에 위치시키기 -->
           <span style="
@@ -110,7 +110,8 @@
 import { ref, onMounted } from "vue";
 import { fetchPopular } from "@/api/mari-over";
 import type { FetchPopularResult } from "search_popular_response"
-import { CountryCode, mariOverUrl, TagName } from "@/global/constants"
+import useCourseTransformers from "@/script/composable/useCourseTransformers"
+import useImageFallback from "@/script/composable/useImageFallback"
 
 const params = {
   count: 10,
@@ -121,41 +122,24 @@ const params = {
 const PLACE_HOLDER_SRC = "https://via.placeholder.com/256x144";
 const RETRY_DELAY = 500;
 
-
 const data = ref<FetchPopularResult>({ cache_hits: 0, courses: [] });
 const courses = ref(data.value.courses);
 const isLoading = ref(true);
 
-const makeUploadDate = (date: string) => {
-  // 날짜 문자열을 ISO 형식으로 변환
-  const formattedDate = date.replace(
-    /(\d{1,2})-(\d{1,2})-(\d{4})/,
-    (_, day, month, year) => `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
-  );
+const {
+  makeThumbnailUrl,
+  makeUploadDate,
+  makeTagName,
+  makeCountryFlag,
+  formattedCourseID,
+} = useCourseTransformers();
 
-  // Date 객체 생성 후 원하는 형식으로 반환
-  return new Date(formattedDate).toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hourCycle: "h23",
-  });
-};
-const makeThumbnailUrl = (courseId: string) => `${mariOverUrl}/level_thumbnail/${courseId}`;
-const makeTagName = (tag: number) => TagName[tag] ?? "---";
-const makeCountryFlag = (country: string) => CountryCode[country] ?? country;
-const formattedCourseID = (courseId: string) => courseId.replace(/([A-Z0-9]{3})([A-Z0-9]{3})([A-Z0-9]{3})/, "$1-$2-$3");
-
-const imgErrorFunc = (e: Event) => {
-  const target = e.target as HTMLImageElement;
-  const buffer = target.src;
-  target.src = PLACE_HOLDER_SRC;
-  setTimeout(() => {
-    target.src = buffer;
-  }, RETRY_DELAY);
-};
+const {
+  handleImageError,
+} = useImageFallback(
+  PLACE_HOLDER_SRC,
+  RETRY_DELAY,
+);
 
 onMounted(async () => {
   data.value = await fetchPopular(params);
